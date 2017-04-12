@@ -4,7 +4,7 @@ module ExotelApi
     
     def initialize(response)
       #To handle unexpected parsing from httparty
-      response = MultiXml.parse(response) unless response.is_a?(Hash) 
+      response = response.parsed_response
       response_base = response['TwilioResponse']
       unless response_base.include?('RestException')
         set_response_data(response_base)
