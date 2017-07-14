@@ -4,7 +4,7 @@ module ExotelApi
       
     def greeting_and_menu
       begin
-        urls = params[:CustomField].titleize.split.join.constantize::Call.greeting_and_menu
+        urls = params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).greeting_and_menu
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
@@ -24,7 +24,7 @@ module ExotelApi
     
     def closing
       begin
-        urls = params[:CustomField].titleize.split.join.constantize::Call.closing
+        urls = params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).closing
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
