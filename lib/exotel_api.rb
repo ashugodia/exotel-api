@@ -2,6 +2,7 @@ require "rails"
 require "active_support/dependencies"
 require 'httparty'
 require 'exotel_api/version'
+require 'exotel_api/engine'
 require 'exotel_api/config'
 require 'exotel_api/call'
 require 'exotel_api/response'
