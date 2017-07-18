@@ -1,10 +1,13 @@
 module ExotelApi
   class Ivr::CallController < ApplicationController
     skip_before_filter  :verify_authenticity_token
-      
     def greeting_and_menu
       begin
-        urls = params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).greeting_and_menu
+        _call = direction
+        if _call.present?
+          _call.update(status: 'completed')
+          urls = _call.greeting_and_menu if defined?(_call.greeting_and_menu)
+        end
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
@@ -14,7 +17,11 @@ module ExotelApi
     
     def dtmf
       begin
-        params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).update(dtmf: params[:digits].parameterize.to_i)
+        _call = direction
+        if _call.present?
+          _call.update(dtmf: params[:digits].parameterize.to_i)
+          _call.dtmf_callback(params) if defined?(_call.dtmf_callback)
+        end
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
@@ -24,7 +31,8 @@ module ExotelApi
     
     def closing
       begin
-        urls = params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).closing
+        _call = direction
+        urls = _call.closing if _call.present? and defined?(_call.closing)
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
@@ -34,12 +42,31 @@ module ExotelApi
     
     def status
       begin
-        params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid]).update(status: params[:Status])
+        _call = Call.find_by_call_sid(params[:CallSid]) if params[:CallSid].present?
+        if _call.present?
+          _call.update(status: params[:status])
+          _call.status_callback(params) if defined?(_call.status_callback)
+        end
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
       render :plain => '', content_type: "text/html", :status => 200
+    end
+    private
+    def find_call
+      if params[:CustomField].present?
+        params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid])
+      else
+        Call.find_by_call_sid(params[:CallSid])
+      end
+    end
+    def direction
+      if params[:Direction] == 'incoming'
+        eval(ExotelApi.inbound_query)
+      else
+        find_call
+      end
     end
   end
 end
