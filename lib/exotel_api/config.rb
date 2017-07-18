@@ -1,6 +1,6 @@
 module ExotelApi
   class << self
-    attr_accessor :exotel_sid, :exotel_token
+    attr_accessor :exotel_sid, :exotel_token, :inbound_query
     
     def configure
       yield self
