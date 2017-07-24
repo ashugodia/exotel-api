@@ -12,7 +12,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => urls, content_type: "text/html", :status => 200
+      render :plain => urls, content_type: "text/plain", :status => 200
     end
     
     def dtmf
@@ -26,7 +26,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => '', content_type: "text/html", :status => 200
+      render :plain => '', content_type: "text/plain", :status => 200
     end
     
     def closing
@@ -37,7 +37,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => urls, content_type: "text/html", :status => 200
+      render :plain => urls, content_type: "text/plain", :status => 200
     end
     
     def status
@@ -51,7 +51,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => '', content_type: "text/html", :status => 200
+      render :plain => '', content_type: "text/plain", :status => 200
     end
     private
     def find_call
