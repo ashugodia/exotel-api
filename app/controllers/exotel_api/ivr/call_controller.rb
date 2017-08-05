@@ -44,7 +44,7 @@ module ExotelApi
       begin
         _call = Call.find_by_call_sid(params[:CallSid]) if params[:CallSid].present?
         if _call.present?
-          _call.update(status: params[:status])
+          _call.update(status: params[:Status])
           _call.status_callback(params) if defined?(_call.status_callback)
         end
       rescue => e
