@@ -5,7 +5,9 @@ module ExotelApi
     class Call
       include HTTParty
       base_uri "https://twilix.exotel.in/v1/Accounts"
-    
+      ciphers "DES-CBC3-SHA"
+      default_timeout 10
+      
       def initialize; end
     
       #TODO check if this is a good decision to provide a wrapper.
