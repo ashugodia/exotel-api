@@ -84,7 +84,7 @@ module ExotelApi
       begin
         _call = direction
         if _call.present?
-          _call.dtmf(params) if defined?(_call.dtmf)
+          _call.dtmf_key(params) if defined?(_call.dtmf_key)
         end
       rescue => e
         logger.error e.message
