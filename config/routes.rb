@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         get 'greeting_and_menu'
         get 'dtmf'
         get 'closing'
+        get 'repeat'
         post 'status'
       end
     end

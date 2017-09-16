@@ -53,6 +53,22 @@ module ExotelApi
       end
       render :plain => '', content_type: "text/plain", :status => 200
     end
+    
+    def repeat
+      begin
+        _call = Call.find_by_call_sid(params[:CallSid]) if params[:CallSid].present?
+        if _call.present?
+          _call.repeat += 1
+          _call.save
+          status = _call.repeat_callback(params) if defined?(_call.repeat_callback)
+        end
+      rescue => e
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
+      end
+      render :plain => '', content_type: "text/plain", :status => status
+    end
+    
     private
     def find_call
       if params[:CustomField].present?
