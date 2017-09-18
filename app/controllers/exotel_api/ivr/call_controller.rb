@@ -56,7 +56,7 @@ module ExotelApi
     
     def repeat
       begin
-        _call = Call.find_by_call_sid(params[:CallSid]) if params[:CallSid].present?
+        _call = direction
         if _call.present?
           _call.repeat += 1
           _call.save
