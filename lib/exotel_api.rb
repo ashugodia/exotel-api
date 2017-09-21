@@ -7,6 +7,7 @@ require 'exotel_api/config'
 require 'exotel_api/response'
 require 'exotel_api/metadata'
 require 'exotel_api/ivr/call'
+require 'exotel_api/call'
 
 module ExotelApi
   # Your code goes here...
