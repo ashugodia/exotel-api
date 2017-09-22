@@ -14,7 +14,7 @@ module ExotelApi
       end
       render :plain => urls, content_type: "text/plain", :status => 200
     end
-    
+
     def dtmf
       begin
         _call = direction
@@ -28,7 +28,7 @@ module ExotelApi
       end
       render :plain => '', content_type: "text/plain", :status => 200
     end
-    
+
     def closing
       begin
         _call = direction
@@ -39,10 +39,10 @@ module ExotelApi
       end
       render :plain => urls, content_type: "text/plain", :status => 200
     end
-    
+
     def status
       begin
-        _call = Call.find_by_call_sid(params[:CallSid]) if params[:CallSid].present?
+        _call = direction
         if _call.present?
           _call.update(status: params[:Status])
           _call.status_callback(params) if defined?(_call.status_callback)
@@ -53,7 +53,7 @@ module ExotelApi
       end
       render :plain => '', content_type: "text/plain", :status => 200
     end
-    
+
     def repeat
       begin
         _call = direction
@@ -68,13 +68,13 @@ module ExotelApi
       end
       render :plain => '', content_type: "text/plain", :status => status
     end
-    
+
     private
     def find_call
       if params[:CustomField].present?
         params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid])
       else
-        Call.find_by_call_sid(params[:CallSid])
+        eval(ExotelApi.status_callback_query)
       end
     end
     def direction
