@@ -1,6 +1,6 @@
 module ExotelApi
   module Call
-    class ConnectController < CallController
+    class ConnectController < StartController
       #response - nil
       def status
         begin
@@ -13,23 +13,6 @@ module ExotelApi
           logger.error e.backtrace.join("\n")
         end
         render :plain => '', content_type: "text/plain", :status => 200
-      end
-  
-      private
-      def find_call
-        if params[:CustomField].present?
-          params[:CustomField].titleize.split.join.constantize::Call::Connect.find_by_call_sid(params[:CallSid])
-        else
-          Call.find_by_call_sid(params[:CallSid])
-        end
-      end
-  
-      def direction
-        if params[:Direction] == 'incoming'
-          eval(ExotelApi.inbound_query)
-        else
-          find_call
-        end
       end
     end
   end

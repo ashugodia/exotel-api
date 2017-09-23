@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         post 'status'
       end
     end
-    
+
     namespace :call do
       get 'start'
       get 'greeting'
@@ -35,6 +35,7 @@ Rails.application.routes.draw do
           get 'status'
         end
       end
+      get 'repeat'
     end
   end
 end

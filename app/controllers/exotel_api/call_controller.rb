@@ -1,5 +1,5 @@
 module ExotelApi
-  class CallController < ApplicationController
+  class CallController < StartController
     skip_before_filter  :verify_authenticity_token
     #response - greeting,menu,connect
     def start
@@ -105,23 +105,23 @@ module ExotelApi
       end
       render :plain => applet, content_type: "text/html", status: 200
     end
-  
-  
-    private
-    def find_call
-      if params[:CustomField].present?
-        params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid])
-      else
-        Call.find_by_call_sid(params[:CallSid])
+    #response - status code 200,302
+    def repeat
+      begin
+        _call = direction
+        if _call.present?
+          answer = _call.play_again(params) if defined?(_call.play_again)
+          if answer == 'yes'
+            status = '200'
+          else
+            status = '302'
+          end
+        end
+      rescue => e
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
       end
-    end
-  
-    def direction
-      if params[:Direction] == 'incoming'
-        eval(ExotelApi.inbound_query)
-      else
-        find_call
-      end
+      render :plain => '', content_type: "text/plain", :status => status
     end
   end
 end

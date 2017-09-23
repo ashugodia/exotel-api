@@ -58,8 +58,6 @@ module ExotelApi
       begin
         _call = direction
         if _call.present?
-          _call.repeat += 1
-          _call.save
           status = _call.repeat_callback(params) if defined?(_call.repeat_callback)
         end
       rescue => e
