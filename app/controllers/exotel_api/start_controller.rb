@@ -10,7 +10,13 @@ module ExotelApi
     private
     def find_call
       if params[:CustomField].present?
-        params[:CustomField].titleize.split.join.constantize::Call.find_by_call_sid(params[:CallSid])
+        custom_field = params[:CustomField]
+        if request[:controller].present?
+          controller_name = request[:controller]
+          controller_name = controller_name.gsub("/exotel_api",custom_field)
+          controller_name = controller_name.split('/').compact.map {|k| k.titleize.split.join }.join('::')
+          controller_name.constantize.find_by_call_sid(params[:CallSid])
+        end
       else
         eval(ExotelApi.status_callback_query)
       end
