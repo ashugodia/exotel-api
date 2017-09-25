@@ -13,7 +13,7 @@ module ExotelApi
         custom_field = params[:CustomField]
         if request[:controller].present?
           controller_name = request[:controller]
-          controller_name = controller_name.gsub("/exotel_api",custom_field)
+          controller_name = controller_name.gsub("exotel_api",custom_field)
           controller_name = controller_name.split('/').compact.map {|k| k.titleize.split.join }.join('::')
           controller_name.constantize.find_by_call_sid(params[:CallSid])
         end
