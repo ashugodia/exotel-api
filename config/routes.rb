@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       get 'greeting'
       get 'after_greeting'
       get 'ivr_menu'
-      get 'key_press'
+      get 'keypress'
       get 'after_keypress'
       get 'after_keypress_greeting'
       get 'play_again'
