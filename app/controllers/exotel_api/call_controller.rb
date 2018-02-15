@@ -65,6 +65,19 @@ module ExotelApi
       end
       render :plain => urls, content_type: "text/html", status: 200
     end
+    #response - switch case ivr_menu, hangup
+    def after_keypress_greeting
+      begin
+        _call = direction
+        if _call.present?
+          applet = "{\"select\":\"#{_call.after_keypress_greeting(params)}\"}" if defined?(_call.after_keypress_greeting)
+        end
+      rescue => e
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
+      end
+      render :plain => applet, content_type: "text/html", status: 200
+    end
     #response - status 200, 404 or 302 and plain ''
     def play_again
       begin
