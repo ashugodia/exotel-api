@@ -1,6 +1,5 @@
 module ExotelApi
   class CallController < StartController
-    skip_before_filter  :verify_authenticity_token
     #response - greeting,menu,connect
     def start
       begin
