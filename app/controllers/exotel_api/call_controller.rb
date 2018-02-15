@@ -83,18 +83,13 @@ module ExotelApi
       begin
         _call = direction
         if _call.present?
-          answer = _call.play_again(params) if defined?(_call.play_again)
-          if answer == 'yes'
-            status = '200'
-          else
-            status = '302'
-          end
+          applet = "{\"select\":\"#{_call.play_again(params)}\"}" if defined?(_call.play_again)
         end
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => '', content_type: "text/plain", :status => status
+      render :plain => applet, content_type: "text/plain", :status => 200
     end
     #response - status 200 and plain ''
     def finish
