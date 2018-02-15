@@ -1,41 +1,13 @@
 Rails.application.routes.draw do
   namespace :exotel_api do
-    namespace :ivr do
-      namespace :call do
-        get 'greeting_and_menu'
-        get 'dtmf'
-        get 'closing'
-        get 'repeat'
-        post 'status'
-      end
-    end
-
     namespace :call do
-      get 'start'
       get 'greeting'
       get 'after_greeting'
-      namespace :after_greeting do
-        get 'connect'
-        namespace :connect do
-          get 'status'
-        end
-      end
-      get 'connect'
-      namespace :connect do
-        get 'status'
-      end
+      get 'ivr_menu'
+      get 'key_press'
+      get 'after_keypress'
+      get 'play_again'
       post 'finish'
-      get 'menu'
-      get 'dtmf'
-      get 'after_dtmf'
-      namespace :after_dtmf do
-        get 'greeting'
-        get 'after_greeting'
-        namespace :connect do
-          get 'status'
-        end
-      end
-      get 'repeat'
     end
   end
 end

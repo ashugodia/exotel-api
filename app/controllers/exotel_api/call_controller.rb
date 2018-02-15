@@ -1,19 +1,6 @@
 module ExotelApi
   class CallController < StartController
-    #response - greeting,menu,connect
-    def start
-      begin
-        _call = direction
-        if _call.present?
-          applet = "{\"select\":\"#{_call.start(params)}\"}" if defined?(_call.start)
-        end
-      rescue => e
-        logger.error e.message
-        logger.error e.backtrace.join("\n")
-      end
-      render :plain => applet, content_type: "text/html", status: 200
-    end
-    #response - list of URLS
+    #response - audio file or list of URLS of audio files
     def greeting
       begin
         _call = direction
@@ -26,7 +13,7 @@ module ExotelApi
       end
       render :plain => urls, content_type: "text/plain", :status => 200
     end
-    #response - menu,connect
+    #response - switch case ivr_menu, hangup
     def after_greeting
       begin
         _call = direction
@@ -39,38 +26,12 @@ module ExotelApi
       end
       render :plain => applet, content_type: "text/html", status: 200
     end
-    #response - phone
-    def connect
+    #response - audio file or list of URLS of audio files
+    def ivr_menu
       begin
         _call = direction
         if _call.present?
-          phones = _call.connect if defined?(_call.connect)
-        end
-      rescue => e
-        logger.error e.message
-        logger.error e.backtrace.join("\n")
-      end
-      render :plain => phones, content_type: "text/plain", :status => 200
-    end
-    #response - nil
-    def finish
-      begin
-        _call = direction
-        if _call.present?
-          _call.finish(params) if defined?(_call.finish)
-        end
-      rescue => e
-        logger.error e.message
-        logger.error e.backtrace.join("\n")
-      end
-      render :plain => '', content_type: "text/plain", :status => 200
-    end
-    #response - list of URLS
-    def menu
-      begin
-        _call = direction
-        if _call.present?
-          urls = _call.menu(params) if defined?(_call.menu)
+          urls = _call.ivr_menu(params) if defined?(_call.ivr_menu)
         end
       rescue => e
         logger.error e.message
@@ -78,12 +39,12 @@ module ExotelApi
       end
       render :plain => urls, content_type: "text/plain", :status => 200
     end
-    #response - nil
-    def dtmf
+    #response - status 200 and plain ''
+    def keypress
       begin
         _call = direction
         if _call.present?
-          _call.dtmf_key(params) if defined?(_call.dtmf_key)
+          _call.keypress(params) if defined?(_call.keypress)
         end
       rescue => e
         logger.error e.message
@@ -91,21 +52,21 @@ module ExotelApi
       end
       render :plain => '', content_type: "text/plain", :status => 200
     end
-    #response - greeting,connect
-    def after_dtmf
+    #response - audio file or list of URLs of audio files
+    def after_keypress
       begin
         _call = direction
         if _call.present?
-          applet = "{\"select\":\"#{_call.after_dtmf(params)}\"}" if defined?(_call.after_dtmf)
+          urls = _call.after_keypress(params) if defined?(_call.after_keypress)
         end
       rescue => e
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => applet, content_type: "text/html", status: 200
+      render :plain => urls, content_type: "text/html", status: 200
     end
-    #response - status code 200,302
-    def repeat
+    #response - status 200, 404 or 302 and plain ''
+    def play_again
       begin
         _call = direction
         if _call.present?
@@ -121,6 +82,19 @@ module ExotelApi
         logger.error e.backtrace.join("\n")
       end
       render :plain => '', content_type: "text/plain", :status => status
+    end
+    #response - status 200 and plain ''
+    def finish
+      begin
+        _call = direction
+        if _call.present?
+          _call.finish(params) if defined?(_call.finish)
+        end
+      rescue => e
+        logger.error e.message
+        logger.error e.backtrace.join("\n")
+      end
+      render :plain => '', content_type: "text/plain", :status => 200
     end
   end
 end
