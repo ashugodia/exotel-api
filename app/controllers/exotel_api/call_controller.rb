@@ -63,7 +63,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => urls, content_type: "text/html", status: 200
+      render :plain => urls, content_type: "text/plain", status: 200
     end
     #response - switch case ivr_menu, hangup
     def after_keypress_greeting
