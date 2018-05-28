@@ -50,7 +50,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => '', content_type: "text/plain", :status => 200
+      render :plain => '', content_type: "text/html", :status => 200
     end
     #response - audio file or list of URLs of audio files
     def after_keypress
@@ -89,7 +89,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => applet, content_type: "text/plain", :status => 200
+      render :plain => applet, content_type: "text/html", :status => 200
     end
     #response - status 200 and plain ''
     def finish
@@ -102,7 +102,7 @@ module ExotelApi
         logger.error e.message
         logger.error e.backtrace.join("\n")
       end
-      render :plain => '', content_type: "text/plain", :status => 200
+      render :plain => '', content_type: "text/html", :status => 200
     end
   end
 end
